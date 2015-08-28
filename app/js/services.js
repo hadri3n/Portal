@@ -120,11 +120,13 @@ angular.module('portal.services', [])
 		var queryJob = function(job) {
 			$http.get(job.url + "/lastCompletedBuild/api/json").then(
 				//success
-				function(jobDatas) {
+				function(resp) {
 					if ((now - job.lastCompletedBuild.timestamp) < interval) {
+						var jobDatas = resp.data;
 						jobDatas.name = job.name;
 						jobDatas.description = job.description;
-						jobDatas.configureUrl = job.url + "configure";
+						jobDatas.configureUrl = job.url + "/configure";
+						jobDatas.outputUrl = jobDatas.url + '/console';
 						filteredJobs.push(jobDatas);
 						deferredJobs.notify("New Job");
 					}
